@@ -27,7 +27,7 @@ namespace ModCore
                 Console.ReadKey();
                 return;
             }
-            
+
             var input = File.ReadAllText("settings.json", new UTF8Encoding(false));
             Settings = JsonConvert.DeserializeObject<Settings>(input);
 

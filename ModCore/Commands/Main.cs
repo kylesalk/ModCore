@@ -41,27 +41,27 @@ namespace ModCore.Commands
         }
 
         [Command("purgeuser"), Aliases("pu"), RequirePermissions(Permissions.ManageMessages)]
-        public async Task PurgeUserAsync(CommandContext ctx, DiscordUser user, int limit, int skip = 0)
+        public async Task PurgeUserAsync(CommandContext ctx, DiscordUser User, int limit, int skip = 0)
         {
             var i = 0;
             var ms = await ctx.Channel.GetMessagesAsync(limit, ctx.Message.Id);
             var delet_this = new List<DiscordMessage>();
             foreach (var m in ms)
             {
-                if (user != null && m.Author.Id != user.Id) continue;
+                if (User != null && m.Author.Id != User.Id) continue;
                 if (i < skip)
                     i++;
                 else
                     delet_this.Add(m);
             }
             if (delet_this.Any())
-                await ctx.Channel.DeleteMessagesAsync(delet_this, $"Purged messages by {user.Username}#{user.Discriminator} (ID:{user.Id})");
-            var resp = await ctx.RespondAsync($"Latest messages by {user.Mention} (ID:{user.Id}) deleted.");
+                await ctx.Channel.DeleteMessagesAsync(delet_this, $"Purged messages by {User.Username}#{User.Discriminator} (ID:{User.Id})");
+            var resp = await ctx.RespondAsync($"Latest messages by {User.Mention} (ID:{User.Id}) deleted.");
             await Task.Delay(2000);
             await resp.DeleteAsync("Purge command executed.");
             await ctx.Message.DeleteAsync("Purge command executed.");
 
-            await ctx.LogAction($"Purged messages.\nUser: {user.Username}#{user.Discriminator} (ID:{user.Id})\nChannel: #{ctx.Channel.Name} ({ctx.Channel.Id})");
+            await ctx.LogAction($"Purged messages.\nUser: {User.Username}#{User.Discriminator} (ID:{User.Id})\nChannel: #{ctx.Channel.Name} ({ctx.Channel.Id})");
         }
 
         [Command("purge"), Aliases("p"), RequirePermissions(Permissions.ManageMessages)]
@@ -252,8 +252,8 @@ namespace ModCore.Commands
             if (usr.IsOwner) embed.Title += " __[OWNER]__ ";
 
             embed.Description =
-                $"Registered on     : {usr.CreationTimestamp.DateTime}\n" +
-                $"Joined Guild on  : {usr.JoinedAt.DateTime}";
+                $"Registered on     : {usr.CreationTimestamp.DateTime.ToString()}\n" +
+                $"Joined Guild on  : {usr.JoinedAt.DateTime.ToString()}";
 
             var roles = new StringBuilder();
             foreach (var r in usr.Roles) roles.Append($"[{r.Name}] ");
