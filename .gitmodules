@@ -1,0 +1,6 @@
+[submodule "ModCore/dsharpplus"]
+	path = ModCore/dsharpplus
+	url = https://github.com/NaamloosDT/dsharpplus.git
+[submodule "dsharpplus"]
+	path = dsharpplus
+	url = https://github.com/NaamloosDT/dsharpplus

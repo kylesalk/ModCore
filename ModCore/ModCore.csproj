@@ -1,24 +1,33 @@
-
-<Project Sdk="Microsoft.NET.Sdk">
-  
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
-  
   <ItemGroup>
-    <PackageReference Include="DSharpPlus" Version="3.2.2-beta-00312" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="3.2.2-beta-00312" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="3.2.2-beta-00312" />
+    <!--<PackageReference Include="DSharpPlus" Version="3.2.2-beta-00312" />-->
+    <!--<PackageReference Include="DSharpPlus.CommandsNext" Version="3.2.2-beta-00312" />-->
+    <!--<PackageReference Include="DSharpPlus.Interactivity" Version="3.2.2-beta-00312" />-->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
   </ItemGroup>
-
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
   </ItemGroup>
-  
+  <ItemGroup>
+    <Compile Remove="dsharpplus\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="dsharpplus\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dsharpplus\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dsharpplus\DSharpPlus.CommandsNext\DSharpPlus.CommandsNext.csproj" />
+    <ProjectReference Include="..\dsharpplus\DSharpPlus.Interactivity\DSharpPlus.Interactivity.csproj" />
+    <ProjectReference Include="..\dsharpplus\DSharpPlus\DSharpPlus.csproj" />
+  </ItemGroup>
 </Project>
