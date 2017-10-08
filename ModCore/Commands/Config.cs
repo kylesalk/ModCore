@@ -217,7 +217,7 @@ namespace ModCore.Commands
 
             [Group("modules"), Aliases("mod", "m", "s"),
              Description("Commands to toggle linkfilter modules for this guild.")]
-            public class Modules
+            public class CumModules
             {
                 private delegate ref bool WithLinkfilter(GuildLinkfilterSettings lf);
 
@@ -235,7 +235,7 @@ namespace ModCore.Commands
                 }
 
                 [Group("all"), Aliases("a", "0"), Description("Commands to manage all linkfilter modules at once.")]
-                public class AllModules
+                public class CumAllModules
                 {
                     [Command("off"), Aliases("false", "f", "0"),
                      Description("Disables all linkfilter modules for this guild.")]
@@ -310,7 +310,7 @@ namespace ModCore.Commands
             }
 
             [Group("user"), Aliases("usr", "u"), Description("User exemption management commands.")]
-            public class User
+            public class CumUser
             {
                 [Command("exempt"), Aliases("x"), Description("Exempts user from linkfilter checks.")]
                 public async Task ExemptAsync(CommandContext ctx,
@@ -340,7 +340,7 @@ namespace ModCore.Commands
             }
 
             [Group("role"), Aliases("r"), Description("Role exemption management commands.")]
-            public class Role
+            public class CumRole
             {
                 [Command("exempt"), Aliases("x"), Description("Exempts role from linkfilter checks.")]
                 public async Task ExemptAsync(CommandContext ctx,
@@ -368,7 +368,7 @@ namespace ModCore.Commands
             }
 
             [Group("guild"), Aliases("invite", "i"), Description("Invite target exemption management commands,")]
-            public class Guild
+            public class CumGuild
             {
                 [Command("exempt"), Aliases("x"), Description("Exempts code from invite checks.")]
                 public async Task ExemptAsync(CommandContext ctx,

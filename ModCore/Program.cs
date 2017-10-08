@@ -1,10 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace ModCore
 {
-    internal class Program
+    internal static class Program
     {
-        private static Task Main(string[] args) =>
-            new ModCore().InitializeAsync();
+        private static async Task Main() {
+            try
+            {
+                await new ModCore().InitializeAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
     }
 }
