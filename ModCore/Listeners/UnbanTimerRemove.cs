@@ -1,11 +1,7 @@
-﻿using DSharpPlus.EventArgs;
+﻿using System.Threading.Tasks;
+using DSharpPlus.EventArgs;
 using ModCore.Entities;
 using ModCore.Logic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModCore.Listeners
 {

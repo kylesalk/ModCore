@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
-using ModCore.Entities;
 
 namespace ModCore.Logic.Utils
 {
     // TODO dependency injection
-    public static partial class Utils
+    public static class Utils
     {
         /// <summary>
         /// Tries to figure out, through enterprise-level heuristic analysis, 

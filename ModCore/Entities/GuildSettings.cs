@@ -12,13 +12,13 @@ namespace ModCore.Entities
         /// Gets or sets the command prefix for the guild.
         /// </summary>
         [JsonProperty("prefix")]
-        public string Prefix { get; set; } = null;
+        public string Prefix { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the role used to mute users from chat. Setting this to 0 will disable muting.
         /// </summary>
         [JsonProperty("mute_role_id")]
-        public ulong MuteRoleId { get; set; } = 0;
+        public ulong MuteRoleId { get; set; }
 
         /// <summary>
         /// Gets the configuration of Linkfilter™. The Linkfilter™ is the all-new system for Filtering Bad Links out of,
@@ -82,13 +82,13 @@ namespace ModCore.Entities
         /// Gets or sets whether JoinLog should be enabled.
         /// </summary>
         [JsonProperty("enabled")]
-        public bool Enable { get; set; } = false;
+        public bool Enable { get; set; }
 
         /// <summary>
         /// Gets or sets the JoinLog channel ID.
         /// </summary>
         [JsonProperty("channel_id")]
-        public long ChannelId { get; set; } = 0;
+        public long ChannelId { get; set; }
     }
 
     /// <summary>
@@ -100,13 +100,13 @@ namespace ModCore.Entities
         /// Gets or sets whether AutoRole should be enabled.
         /// </summary>
         [JsonProperty("enables")]
-        public bool Enable { get; set; } = false;
+        public bool Enable { get; set; }
 
         /// <summary>
         /// Gets or sets the AutoRole role ID.
         /// </summary>
         [JsonProperty("role_id")]
-        public long RoleId { get; set; } = 0;
+        public long RoleId { get; set; }
     }
 
     /// <summary>
@@ -118,13 +118,13 @@ namespace ModCore.Entities
         /// Gets or sets whether the ActionLog should be enabled.
         /// </summary>
         [JsonProperty("enabled")]
-        public bool Enable { get; set; } = false;
+        public bool Enable { get; set; }
 
         /// <summary>
         /// Gets or sets the ActionLog's webhook ID.
         /// </summary>
         [JsonProperty("webhook_id")]
-        public ulong WebhookId { get; set; } = 0;
+        public ulong WebhookId { get; set; }
 
         /// <summary>
         /// Gets or sets the ActionLog's webhook token.
@@ -165,7 +165,7 @@ namespace ModCore.Entities
         /// Gets or sets whether Linkfilter™ should be enabled.
         /// </summary>
         [JsonProperty("enabled")]
-        public bool Enable { get; set; } = false;
+        public bool Enable { get; set; }
 
         /// <summary>
         /// Gets or sets the number of invites after which the user gets automatically banned for ads. Set to 0 to disable automatic bans.
@@ -219,7 +219,7 @@ namespace ModCore.Entities
         /// Toggles blocking URL shorteners, unless posted by a member with 'Manage Messages' permission or equivalent.
         /// </summary>
         [JsonProperty("block_url_shorteners")]
-        public bool BlockUrlShorteners = false;
+        public bool BlockUrlShorteners;
         
         /// <summary>
         /// Toggles blocking shock sites, screamers and gore sites, unless posted by a member with 'Manage Messages'
@@ -238,7 +238,7 @@ namespace ModCore.Entities
         /// Gets or sets whether InvisiCop should be enabled.
         /// </summary>
         [JsonProperty("enabled")]
-        public bool Enable { get; set; } = false;
+        public bool Enable { get; set; }
 
         /// <summary>
         /// Gets the list of roles which are exempt from InvisiCop checks.
@@ -262,7 +262,7 @@ namespace ModCore.Entities
         /// Gets or sets whether Role State should be enabled.
         /// </summary>
         [JsonProperty("enabled")]
-        public bool Enable { get; set; } = false;
+        public bool Enable { get; set; }
 
         /// <summary>
         /// Gets the list of roles which are ignored by Role State. These roles won't be saved or restored.

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,9 +19,9 @@ namespace ModCore.Api
 
         public async Task RequestAnalysis(string message)
         {
-            var RequestPayload = new PerspectiveAnalysisRequest()
+            var RequestPayload = new PerspectiveAnalysisRequest
             {
-                Comment = new PerspectiveComment()
+                Comment = new PerspectiveComment
                 {
                     Text = message
                 }
@@ -48,7 +47,7 @@ namespace ModCore.Api
         public Dictionary<string, PerspectiveContextEntry> RequestedAttributes = new Dictionary<string, PerspectiveContextEntry>();
 
         [JsonProperty("languages")]
-        public List<string> Languages = new List<string>() { "en" };
+        public List<string> Languages = new List<string> { "en" };
 
         [JsonProperty("doNotStore")]
         public bool DoNotStore = true;

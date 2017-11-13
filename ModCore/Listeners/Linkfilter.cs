@@ -551,7 +551,7 @@ namespace ModCore.Listeners
     // use a separate class to avoid class loader bloat
     public static class UrlShortenerConstants
     {
-        public static readonly ImmutableDictionary<string, string> UrlShorteners = new Dictionary<string, string>()
+        public static readonly ImmutableDictionary<string, string> UrlShorteners = new Dictionary<string, string>
         {
             ["jesais.fr"] = "http://www.jelev.eu/accueil.php",
             ["aelita.fr"] = "http://www.jelev.eu/accueil.php",
@@ -1100,7 +1100,7 @@ namespace ModCore.Listeners
             ["zzang.kr"] = "http://longurl.org/services",
             ["zzz.ee"] = "http://urlshortener.org",
             ["joturl.com"] = "http://www.joturl.comS",
-            ["co.nr"] = "http://www.freedomain.co.nr/",
+            ["co.nr"] = "http://www.freedomain.co.nr/"
         }.ToImmutableDictionary();
 
         public static readonly LinkfilterMatcher UrlShortenerRegex = new LinkfilterMatcher(UrlShorteners.Keys);

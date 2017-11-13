@@ -189,7 +189,7 @@ namespace ModCore.Listeners
 
             // set a new timer
             DatabaseTimer[] timers = null;
-            bool force = false;
+            var force = false;
             using (var db = database.CreateContext())
             {
                 var ids = client.Guilds.Select(xg => (long)xg.Key).ToArray();

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DSharpPlus.CommandsNext;
-using ModCore.Logic;
-using System.Threading.Tasks;
 using System.IO;
-using ModCore.Entities;
-using DSharpPlus.Entities;
-using DSharpPlus.CommandsNext.Exceptions;
+using System.Threading.Tasks;
 using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Exceptions;
+using DSharpPlus.Entities;
+using ModCore.Entities;
+using ModCore.Logic;
 
 namespace ModCore.Listeners
 {
@@ -20,10 +18,10 @@ namespace ModCore.Listeners
             var cfg = e.Context.GetGuildSettings();
             var ce = cfg.CommandError;
             var ctx = e.Context;
-            e.Context.Client.DebugLogger.LogMessage(LogLevel.Critical, "Commands", e.Exception.ToString() 
+            e.Context.Client.DebugLogger.LogMessage(LogLevel.Critical, "Commands", e.Exception 
                 + $"\nError verbosity: chat.{ce.Chat} actionlog.{ce.ActionLog}", DateTime.Now);
 
-            if (e.Exception.GetType() == typeof(CommandNotFoundException))
+            if (e.Exception is CommandNotFoundException)
                 return;
 
             switch (ce.Chat)
@@ -39,8 +37,8 @@ namespace ModCore.Listeners
                     await ctx.RespondAsync($"**Command {e.Command.QualifiedName} Errored!**\n`{e.Exception.GetType()}`:\n{e.Exception.Message}");
                     break;
                 case CommandErrorVerbosity.Exception:
-                    MemoryStream stream = new MemoryStream();
-                    StreamWriter writer = new StreamWriter(stream);
+                    var stream = new MemoryStream();
+                    var writer = new StreamWriter(stream);
                     writer.Write(e.Exception.ToString());
                     writer.Flush();
                     stream.Position = 0;
@@ -48,31 +46,28 @@ namespace ModCore.Listeners
                     break;
             }
 
-            if (cfg.ActionLog.Enable)
+            if (!cfg.ActionLog.Enable) return;
+            
+            switch (ce.ActionLog)
             {
-                switch (ce.ActionLog)
-                {
-                    default:
-                    case CommandErrorVerbosity.None:
-                        break;
+                default:
+                case CommandErrorVerbosity.None:
+                    break;
 
-                    case CommandErrorVerbosity.Name:
-                        await ctx.LogMessageAsync($"**Command {e.Command.QualifiedName} Errored!**\n`{e.Exception.GetType()}`");
-                        break;
-                    case CommandErrorVerbosity.NameDesc:
-                        await ctx.LogMessageAsync($"**Command {e.Command.QualifiedName} Errored!**\n`{e.Exception.GetType()}`:\n{e.Exception.Message}");
-                        break;
-                    case CommandErrorVerbosity.Exception:
-                        var st = e.Exception.StackTrace;
+                case CommandErrorVerbosity.Name:
+                    await ctx.LogMessageAsync($"**Command {e.Command.QualifiedName} Errored!**\n`{e.Exception.GetType()}`");
+                    break;
+                case CommandErrorVerbosity.NameDesc:
+                    await ctx.LogMessageAsync($"**Command {e.Command.QualifiedName} Errored!**\n`{e.Exception.GetType()}`:\n{e.Exception.Message}");
+                    break;
+                case CommandErrorVerbosity.Exception:
+                    var st = e.Exception.StackTrace;
 
-                        st = st.Length > 1000 ? st.Substring(0, 1000) : st;
-                        var b = new DiscordEmbedBuilder().WithDescription(st);
-                        await ctx.LogMessageAsync($"**Command {e.Command.QualifiedName} {e.Command.Arguments} Errored!**\n`{e.Exception.GetType()}`:\n{e.Exception.Message}", b);
-                        break;
-                }
+                    st = st.Length > 1000 ? st.Substring(0, 1000) : st;
+                    var b = new DiscordEmbedBuilder().WithDescription(st);
+                    await ctx.LogMessageAsync($"**Command {e.Command.QualifiedName} {e.Command.Arguments} Errored!**\n`{e.Exception.GetType()}`:\n{e.Exception.Message}", b);
+                    break;
             }
-
-            return;
         }
     }
 }

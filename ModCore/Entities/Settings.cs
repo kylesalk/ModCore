@@ -94,6 +94,6 @@ namespace ModCore.Entities
     {
         PostgreSql,
         InMemory,
-        Sqlite,
+        Sqlite
     }
 }
