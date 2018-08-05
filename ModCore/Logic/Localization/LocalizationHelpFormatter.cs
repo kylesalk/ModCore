@@ -11,21 +11,31 @@ namespace ModCore.Logic.Localization
 {
     public class LocalizationHelpFormatter : BaseHelpFormatter
     {
-        public DiscordEmbedBuilder EmbedBuilder { get; }
+        private DiscordEmbedBuilder EmbedBuilder { get; }
         private Command Command { get; set; }
+        private Localizer Localizer { get; }
 
         /// <inheritdoc />
         /// <summary>
         /// Creates a new l18n help formatter.
         /// </summary>
         /// <param name="ctx">Context in which this formatter is being invoked.</param>
-        public LocalizationHelpFormatter(CommandContext ctx)
+        /// <param name="localizer">Localizer service.</param>
+        public LocalizationHelpFormatter(CommandContext ctx, Localizer localizer)
             : base(ctx)
         {
             this.EmbedBuilder = new DiscordEmbedBuilder()
                 .WithTitle("Help")
                 .WithColor(0x007FFF);
+            this.Localizer = localizer;
         }
+
+        /// <summary>
+        /// Helper localize function
+        /// </summary>
+        /// <param name="text">text to localize</param>
+        /// <returns>text with tokens replaced by their local variants</returns>
+        private string L(string text) => this.Localizer.Localize(text);
 
         /// <inheritdoc />
         /// <summary>
@@ -37,13 +47,15 @@ namespace ModCore.Logic.Localization
         {
             this.Command = command;
 
-            this.EmbedBuilder.WithDescription($"{Formatter.InlineCode(command.Name)}: {command.Description ?? "No description provided."}");
+            this.EmbedBuilder.WithDescription(
+                $"{Formatter.InlineCode(command.Name)}: {L(command.Description ?? "$Help.NoDescription")}");
 
             if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
-                this.EmbedBuilder.WithDescription($"{this.EmbedBuilder.Description}\n\nThis group can be executed as a standalone command.");
+                this.EmbedBuilder.WithDescription(
+                    L($"{this.EmbedBuilder.Description}\n\n$Help.GroupIsExecutableWithoutSubcommands"));
 
             if (command.Aliases?.Any() == true)
-                this.EmbedBuilder.AddField("Aliases", string.Join(", ", command.Aliases.Select(Formatter.InlineCode)), false);
+                this.EmbedBuilder.AddField(L("$Help.CommandAliasesTitle"), string.Join(", ", command.Aliases.Select(Formatter.InlineCode)));
 
             if (command.Overloads?.Any() != true) return this;
             
@@ -64,11 +76,12 @@ namespace ModCore.Logic.Localization
                 sb.Append('\n');
             }
 
-            this.EmbedBuilder.AddField("Arguments", sb.ToString().Trim(), false);
+            this.EmbedBuilder.AddField(L("$Help.CommandArgumentsTitle"), sb.ToString().Trim());
 
             return this;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Sets the subcommands for this command, if applicable. This method will be called with filtered data.
         /// </summary>
@@ -76,11 +89,12 @@ namespace ModCore.Logic.Localization
         /// <returns>This help formatter.</returns>
         public override BaseHelpFormatter WithSubcommands(IEnumerable<Command> subcommands)
         {
-            this.EmbedBuilder.AddField(this.Command != null ? "Subcommands" : "Commands", string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))), false);
+            this.EmbedBuilder.AddField(this.Command != null ? L("$Help.SubcommandsTitle") : L("$Help.CommandsTitle"), string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))));
 
             return this;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Construct the help message.
         /// </summary>
@@ -88,7 +102,7 @@ namespace ModCore.Logic.Localization
         public override CommandHelpMessage Build()
         {
             if (this.Command == null)
-                this.EmbedBuilder.WithDescription("Listing all top-level commands and groups. Specify a command to see more information.");
+                this.EmbedBuilder.WithDescription(L("$Help.TopLevelListing"));
 
             return new CommandHelpMessage(embed: this.EmbedBuilder.Build());
         }

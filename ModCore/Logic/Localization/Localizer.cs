@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,41 +12,62 @@ using YamlDotNet.Serialization;
 
 namespace ModCore.Logic.Localization
 {
-    public static class Localizer
+    public class Localizer : IDisposable
     {
-        private static Table<ModCoreLocale, string, string> _tokens;
+        private Table<ModCoreLocale, string, string> _localeTokenMappings;
+        private FileSystemWatcher _watcher;
 
-        public static async Task InitializeAll(string prefix, string extension)
+        public async Task<Localizer> InitializeAll(string localesDir, string prefix, string extension)
         {
-            _tokens = new Table<ModCoreLocale, string, string>();
+            _localeTokenMappings = new Table<ModCoreLocale, string, string>();
 
             var deserializer = new DeserializerBuilder().Build();
 
             foreach (ModCoreLocale locale in Enum.GetValues(typeof(ModCoreLocale)))
             {
                 var name = locale.GetAttributeOfType<LocaleNameAttribute>().LocaleName;
-                var value = await File.ReadAllTextAsync($"{prefix}{name}{extension}", Encoding.UTF8);
+                var value = await File.ReadAllTextAsync($@"{localesDir}\{prefix}{name}{extension}", Encoding.UTF8);
 
                 //_tokens[locale] = new DeserializerBuilder().Build().Deserialize<Dictionary<string, string>>(value);
                 var obj = deserializer.Deserialize<Dictionary<object, object>>(new StringReader(value));
-                // TODO
-                foreach (var (k1, v1) in Flatten(obj))
-                {
-                    Console.WriteLine($"{k1}: {v1}");
-                }
+                
+                _localeTokenMappings.Put(locale, Flatten(obj));
             }
+            
+            InitializeWatcher(localesDir);
 
-#if DEBUG
-            foreach (var (locale, key, value) in _tokens)
-            {
-                Console.WriteLine($"{locale}: ${key} = {value}");
-            }
-#endif
+            return this;
         }
 
-        public static string Localize(string text)
+        [Conditional("DEBUG")]
+        private void InitializeWatcher(string localesDir)
         {
-            if (_tokens == null) throw new InvalidDataException("Localizer is not initialized yet!");
+            // https://stackoverflow.com/a/721743
+            // Create a new FileSystemWatcher and set its properties.
+            _watcher = new FileSystemWatcher
+            {
+                Path = Path.GetDirectoryName(localesDir),
+                // Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories.
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName 
+                               | NotifyFilters.DirectoryName,
+                // Only watch text files.
+                Filter = "*.yml"
+            };
+            // Add event handlers.
+            _watcher.Changed += OnChanged;
+
+            // Begin watching.
+            _watcher.EnableRaisingEvents = true;
+        }
+
+        private void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            //TODO
+        }
+
+        public string Localize(string text)
+        {
+            if (_localeTokenMappings == null) throw new InvalidDataException("Localizer is not initialized yet!");
 
             return null;
         }
@@ -69,7 +91,7 @@ namespace ModCore.Logic.Localization
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         private static IEnumerable<KeyValuePair<string, string>> Flatten(Dictionary<object, object> dict)
-        {
+        {// TODO can maybe use List<string> instead of concatenation?
             foreach (var (k1, v1) in dict)
             {
                 if (v1 is Dictionary<object, object> dict2)
@@ -89,6 +111,8 @@ namespace ModCore.Logic.Localization
                 }
             }
         }
+
+        public void Dispose() => _watcher?.Dispose();
     }
 
     public enum ModCoreLocale : ushort

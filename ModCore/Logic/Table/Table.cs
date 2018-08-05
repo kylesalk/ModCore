@@ -7,7 +7,7 @@ namespace ModCore.Logic.Table
         IReadOnlyCollection<RowColumnValueTriple<TRow, TColumn, TValue>>
     {
         public bool IsReadOnly => false;
-        
+
         public TValue this[TRow row, TColumn column]
         {
             get
@@ -43,6 +43,17 @@ namespace ModCore.Logic.Table
 
             value = entry;
             return true;
+        }
+
+        public void Put(TRow row, IEnumerable<KeyValuePair<TColumn, TValue>> columns)
+        {
+            this[row] = new Dictionary<TColumn, TValue>(columns);
+        }
+
+
+        public void Put(TRow row, KeyValuePair<TColumn, TValue> column)
+        {
+            this[row] = new Dictionary<TColumn, TValue> {[column.Key] = column.Value};
         }
 
         public new IEnumerator<RowColumnValueTriple<TRow, TColumn, TValue>> GetEnumerator()

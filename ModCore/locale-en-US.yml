@@ -1,6 +1,8 @@
-key:
-  value1: val
-  
-akey: valu
-
-keya.keyb: vvva1
+Help:
+  NoDescription: No description provided.
+  GroupIsExecutableWithoutSubcommands: This group can be executed as a standalone command.
+  TopLevelListing: Listing all top-level commands and groups. Specify a command to see more information.
+  CommandAliasesTitle: Aliases
+  CommandArgumentsTitle: Arguments
+  CommandsTitle: Commands
+  SubcommandsTitle: Subcommands

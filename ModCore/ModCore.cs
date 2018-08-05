@@ -30,8 +30,6 @@ namespace ModCore
 		public List<ModCoreShard> Shards { get; set; }
 	    
 	    private DatabaseContextBuilder GlobalContextBuilder { get; set; }
-        private CancellationTokenSource CTS { get; set; }
-        private Perspective PerspectiveApi { get; set; }
 
         internal async Task InitializeAsync(string[] args)
         {
@@ -47,61 +45,56 @@ namespace ModCore
             var input = File.ReadAllText("settings.json", new UTF8Encoding(false));
             Settings = JsonConvert.DeserializeObject<Settings>(input);
 	        
-	        await Localizer.InitializeAll("locale-", ".yml");
-	        
-	        GlobalContextBuilder = Settings.Database.CreateContextBuilder();
-            PerspectiveApi = new Perspective(Settings.PerspectiveToken);
+	        this.GlobalContextBuilder = Settings.Database.CreateContextBuilder();
 
-            Shards = new List<ModCoreShard>();
-            InitializeSharedData(args);
+            this.Shards = new List<ModCoreShard>();
+	        
+	        this.SharedData = new SharedData
+	        {
+		        CTS = new CancellationTokenSource(),
+		        ProcessStartTime = Process.GetCurrentProcess().StartTime,
+		        BotManagers = Settings.BotManagers,
+		        DefaultPrefix = Settings.DefaultPrefix,
+		        ModCore = this
+	        };
+	        if (args.Length == 2)
+	        {
+		        this.SharedData.StartNotify = (ulong.Parse(args[0]), ulong.Parse(args[1]));
+	        }
+
+	        var sharedServices = new SharedServices
+	        {
+		        Localizer = await new Localizer().InitializeAll(".", "locale-", ".yml"),
+		        Perspective = new Perspective(Settings.PerspectiveToken)
+	        };
 
 	        // cnext data that is consistent across shards, so it's fine to share it
 	        for (var i = 0; i < Settings.ShardCount; i++)
             {
-                var shard = new ModCoreShard(Settings, i, SharedData);
-                shard.Initialize();
-                Shards.Add(shard);
+                var shard = new ModCoreShard(this.Settings, i, this.SharedData);
+                shard.Initialize(sharedServices);
+	            this.Shards.Add(shard);
 	            if (i == 0)
 	            {
-		            SharedData.Initialize(shard);
+		            this.SharedData.Initialize(shard);
 	            }
             }
 
-	        await InitializeDatabaseAsync();
+	        await this.InitializeDatabaseAsync();
 
 	        foreach (var shard in Shards)
 		        await shard.RunAsync();
 
-	        await BuildWebHost().RunAsync(CTS.Token);
+	        await this.BuildWebHost().RunAsync(this.SharedData.CTS.Token);
 
-			await WaitForCancellation();
+			await WaitForCancellation(this.SharedData.CTS);
 
-			foreach (var shard in Shards)
+			foreach (var shard in this.Shards)
 				await shard.DisconnectAndDispose();
 
 			this.SharedData.CTS.Dispose();
 			this.SharedData.TimerData.Cancel.Cancel();
 			this.SharedData.TimerSempahore.Dispose();
-        }
-
-        /// <summary>
-        /// Initialized the SharedData we need for the shards.
-        /// </summary>
-        private void InitializeSharedData(string[] args)
-        {
-            CTS = new CancellationTokenSource();
-	        SharedData = new SharedData
-	        {
-		        CTS = CTS,
-		        ProcessStartTime = Process.GetCurrentProcess().StartTime,
-		        Perspective = PerspectiveApi,
-		        BotManagers = Settings.BotManagers,
-		        DefaultPrefix = Settings.DefaultPrefix,
-		        ModCore = this
-	        };
-	        if (args.Length == 2) {
-                SharedData.StartNotify = (ulong.Parse(args[0]), ulong.Parse(args[1]));
-            }
         }
 
 	    private async Task InitializeDatabaseAsync()
@@ -110,7 +103,7 @@ namespace ModCore
 		    var modifications = new List<string>();
 		    using (var db = this.CreateGlobalContext())
 		    {
-			    foreach (var (name, _) in SharedData.Commands)
+			    foreach (var (name, _) in this.SharedData.Commands)
 			    {
 				    if (db.CommandIds.FirstOrDefault(e => e.Command == name) != null) continue;
 				    Console.WriteLine($"Registering new command in db: {name}");
@@ -123,12 +116,13 @@ namespace ModCore
 			    }
 			    await db.SaveChangesAsync();
 		    }
-            
 	    }
-        public async Task WaitForCancellation()
+	    
+        private static Task WaitForCancellation(CancellationTokenSource cts)
         {
-            while (!CTS.IsCancellationRequested)
-                await Task.Delay(500);
+	        var tcs = new TaskCompletionSource<bool>();
+	        cts.Token.Register(s => ((TaskCompletionSource<bool>)s).SetResult(true), tcs);
+	        return tcs.Task;
         }
 
 		private IWebHost BuildWebHost()

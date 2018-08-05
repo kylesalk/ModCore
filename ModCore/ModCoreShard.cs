@@ -39,7 +39,7 @@ namespace ModCore
             ShardId = id;
         }
 
-        internal void Initialize()
+        internal void Initialize(SharedServices sharedServices)
         {
             // Store the Start Times to use in DI
             // SocketStartTime will be updated in the SocketOpened event,
@@ -87,8 +87,10 @@ namespace ModCore
                 .AddSingleton(this.Interactivity)
                 .AddSingleton(this.StartTimes)
                 .AddSingleton(this.Database)
+                .AddSingleton(sharedServices.Localizer)
+                .AddSingleton(sharedServices.Perspective)
                 .BuildServiceProvider();
-
+            
             // enable commandsnext
             this.Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {

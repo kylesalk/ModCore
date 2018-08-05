@@ -5,6 +5,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
+using ModCore.Api;
 using ModCore.Database;
 using ModCore.Entities;
 using ModCore.Logic;
@@ -15,15 +16,15 @@ namespace ModCore.Commands
     [Group("toxicity"), Aliases("toxic", "tox", "t"), RequireUserPermissions(Permissions.ManageMessages), CheckDisable]
     public class Toxicity : BaseCommandModule
     {
-        public SharedData Shared { get; }
+        public Perspective PerspectiveApi { get; }
         public DatabaseContextBuilder Database { get; }
         public InteractivityExtension Interactivity { get; }
         public StartTimes StartTimes { get; }
 
-        public Toxicity(SharedData shared, DatabaseContextBuilder db, InteractivityExtension interactive, StartTimes starttimes)
+        public Toxicity(Perspective shared, DatabaseContextBuilder db, InteractivityExtension interactive, StartTimes starttimes)
         {
             this.Database = db;
-            this.Shared = shared;
+            this.PerspectiveApi = shared;
             this.Interactivity = interactive;
             this.StartTimes = starttimes;
         }
@@ -36,7 +37,7 @@ namespace ModCore.Commands
             var msg = await channel.GetMessagesBeforeAsync(channel.LastMessageId, 100);
             var msgstr = msg.Where(x => x.Author.Id == member.Id).Select(x => x.Content);
             var str = string.Join('\n', msgstr);
-            var a = await Shared.Perspective.RequestAnalysis(str);
+            var a = await PerspectiveApi.RequestAnalysis(str);
             await ctx.SafeRespondAsync($"Toxicity: {a.AttributeScores.First().Value.SummaryScore.Value}");
         }
     }

@@ -61,7 +61,7 @@ Inherited from DEFCON 3:
 \* Role states will be disabled until the DEFCON state is lifted.",
         };
 
-        [Command("5"), ComputedDescription("Sets the DEFCON level to 5. $Defcon5.Description")]
+        [Command("5"), Description("Sets the DEFCON level to 5. $Defcon5.Description")]
         public async Task FadeOutAsync(CommandContext ctx,
             [Description("New command prefix for this guild")]
             string prefix = null)
