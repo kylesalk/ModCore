@@ -1,0 +1,94 @@
+RemindersGuide: |
+  The time span parser is fluent and will understand many different formats of time, as long as they follow the base:
+  
+  [in] <Time span> [to] [Message]
+  
+  Where "Time span" represents a time period such as
+  \* Tomorrow
+  \* Next fortnight
+  \* 8 hours 20 minutes
+  \* 2h
+  \* 4m5s
+  \* 15min
+  \* 30min55sec
+  
+  See these examples:
+  
+  ```
+  +remindme next week to walk the dog
+  +remindme tomorrow fix socket
+  +remindme 2h5m watch new stranger things episode
+  +remindme 8 hours wake up
+  +remindme in an hour to eat something
+  +remindme in nine months to have a baby
+  +remindme in 7 minutes
+  +remindme 7m
+  ```
+  
+  Note that even if your arguments don't fit the grammar denoted above, they might still be parsed fine.
+  If in doubt, just try it! You can always clear the reminders later. 
+
+DefconGuide: |
+  Controls for automated anti-raiding mechanisms.
+  During DEFCON mode, some settings are temporarily changed to protect your server.
+  All actions taken by the anti-raid will be logged to a new channel, normally called `#defcon`.
+  DEFCON tries to be as non-destructive as possible, but some actions could lead to false positives.
+  Please read the information provided for the DEFCON level you're looking at before blindly selecting it.
+
+Defcon5:
+  ExerciseTerm: FADE OUT
+  Description: |
+    This is the lowest level.
+    \* There are no automated preventive measures taken to combat automated raiding.
+    \* Any changes to server configuration made by ModCore will be restored to the default state.
+
+Defcon4:
+  ExerciseTerm: DOUBLE TAKE
+  Description: |
+    Paranoid mode.
+    \* Verification level is set to Medium if not already higher.
+    \* Chat is set to 10 seconds slow mode for members who haven't been in the guild for over a month.
+    \* Explicit content filter set to scan messages from members without a role if not already higher.
+
+Defcon3:
+  ExerciseTerm: ROUND HOUSE
+  Description: |
+    Active threat mode.
+    \* Verification level is set to table-flip mode if not already higher.
+    \* Chat is set to 30 seconds slow mode for all members.
+    \* Explicit content filter set to scan messages from all members.
+    \* Suspicious permissions will be removed from the `@everyone` role.
+    \* Role states will be disabled until the DEFCON state is lifted.
+
+Defcon2:
+  ExerciseTerm: FAST PACE
+  Description: |
+    Concurrent threat mode.
+    \* Verification level is set to table-flip mode if not already higher.
+    \* New members are immediately kicked with a message.
+    \* Chat is set to 30 seconds slow mode for all members.
+    \* Only messages containing alphanumerical (regardless of language or alphabet) text (or whitespace) are allowed. Violators of this rule will be muted for two minutes.
+    \* All messages will be checked by the Perspective API, and those deemed toxic will be met with a two-minute mute.
+    
+    Inherited from DEFCON 3:
+    \* Explicit content filter set to scan messages from all members.
+    \* Suspicious permissions will be removed from the `@everyone` role.
+    \* Role states will be disabled until the DEFCON state is lifted.
+
+Defcon1:
+  ExerciseTerm: COCKED PISTOL
+  Description: |
+    Uncontrollable threat mode.
+    \* All invite links are removed.
+    \* New members are immediately kicked with a message.
+    \* Users who attempt to create invite links will be immediately banned.
+    \* Chat is set to 2 minutes slow mode for members without roles, and 30 seconds for members with roles.
+    \* Only messages containing alphanumerical (regardless of language or alphabet) text (or whitespace) are allowed. Violators of this rule will be muted until the DEFCON state is lifted.
+    \* All messages will be checked by the Perspective API, and those deemed toxic will be met with a mute until the DEFCON state is lifted.
+    \* All channels will be hidden for all bots except ModCore.
+    \* Attachments are disabled for all members.
+    
+    Inherited from DEFCON 3:
+    \* Suspicious permissions will be removed from the `@everyone` role.
+    \* Role states will be disabled until the DEFCON state is lifted.
+

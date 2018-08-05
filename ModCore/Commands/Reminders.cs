@@ -16,54 +16,25 @@ using ModCore.Logic.Extensions;
 
 namespace ModCore.Commands
 {
-    [Group("reminder"), Aliases("remindme", "remind"), Description("Commands for managing your reminders."), CheckDisable]
+    [Group("reminder"), Aliases("remindme", "remind"), Description("Commands for managing your reminders. " +
+                                                                   "$RemindersGuide"), CheckDisable]
     public class Reminders : BaseCommandModule
 	{
-        private const string ReminderTut = @"
-Sets a new reminder. The time span parser is fluent and will understand many different formats of time, as long as they follow the base:
-
-[in] <Time span> [to] [Message]
-
-Where ""Time span"" represents a time period such as
-\* Tomorrow
-\* Next fortnight
-\* 8 hours 20 minutes
-\* 2h
-\* 4m5s
-\* 15min
-\* 30min55sec
-
-See these examples:
-
-```
-+remindme next week to walk the dog
-+remindme tomorrow fix socket
-+remindme 2h5m watch new stranger things episode
-+remindme 8 hours wake up
-+remindme in an hour to eat something
-+remindme in nine months to have a baby
-+remindme in 7 minutes
-+remindme 7m
-```
-
-Note that even if your arguments don't fit the grammar denoted above, they might still be parsed fine.
-If in doubt, just try it! You can always clear the reminders later. 
-";
         public SharedData Shared { get; }
         public DatabaseContextBuilder Database { get; }
         public InteractivityExtension Interactivity { get; }
 
-        public Reminders(SharedData shared, DatabaseContextBuilder db, InteractivityExtension interactive)
+        public Reminders(SharedData shared, DatabaseContextBuilder db, InteractivityExtension interactivity)
         {
             this.Shared = shared;
             this.Database = db;
-            this.Interactivity = interactive;
+            this.Interactivity = interactivity;
         }
 
-        [GroupCommand, Description(ReminderTut)]
-        public async Task ExecuteGroupAsync(CommandContext ctx, [RemainingText, Description("When the reminder is to be sent.")] string dataToParse)
+        [GroupCommand, Description("Sets a new reminder. $RemindersGuide")]
+        public Task ExecuteGroupAsync(CommandContext ctx, [RemainingText, Description("When the reminder is to be sent.")] string dataToParse)
         {
-            await SetAsync(ctx, dataToParse);
+            return SetAsync(ctx, dataToParse);
         }
 
         [Command("list"), Description("Lists your active reminders."), CheckDisable]
@@ -129,7 +100,7 @@ If in doubt, just try it! You can always clear the reminders later.
                 await ctx.ElevatedRespondAsync(embed: pages.First().Embed);
         }
 
-        [Command("set"), Description(ReminderTut), CheckDisable]
+        [Command("set"), Description("Sets a new reminder. $RemindersGuide"), CheckDisable]
         public async Task SetAsync(CommandContext ctx, [Description("When the reminder is to be sent"), RemainingText] string dataToParse)
         {
             await ctx.TriggerTypingAsync();

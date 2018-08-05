@@ -13,6 +13,7 @@ using ModCore.Database;
 using ModCore.Entities;
 using ModCore.Logic;
 using ModCore.Logic.Extensions;
+using ModCore.Logic.HelpTemplating;
 
 namespace ModCore
 {
@@ -38,7 +39,7 @@ namespace ModCore
             ShardId = id;
         }
 
-        internal void Initialize()
+        internal void Initialize(SharedServices sharedServices)
         {
             // Store the Start Times to use in DI
             // SocketStartTime will be updated in the SocketOpened event,
@@ -86,8 +87,10 @@ namespace ModCore
                 .AddSingleton(this.Interactivity)
                 .AddSingleton(this.StartTimes)
                 .AddSingleton(this.Database)
+                .AddSingleton(sharedServices.Templater)
+                .AddSingleton(sharedServices.Perspective)
                 .BuildServiceProvider();
-
+            
             // enable commandsnext
             this.Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
@@ -98,6 +101,8 @@ namespace ModCore
                 PrefixResolver = this.GetPrefixPositionAsync,
                 Services = deps,
             });
+            
+            this.Commands.SetHelpFormatter<TemplatingHelpFormatter>();
 
             // set the converters
             this.Commands.RegisterConverter(new AugmentedBoolConverter());

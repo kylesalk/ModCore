@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using DSharpPlus.CommandsNext;
-using ModCore.Api;
 using ModCore.CoreApi;
 using ModCore.Listeners;
 
@@ -15,7 +14,6 @@ namespace ModCore.Entities
         public DateTime ProcessStartTime { get; internal set; }
         public SemaphoreSlim TimerSempahore { get; internal set; }
         public TimerData TimerData { get; internal set; }
-        public Perspective Perspective { get; internal set; }
         public (ulong guild, ulong channel) StartNotify { get; internal set; }
         public List<ulong> BotManagers { get; internal set; }
         public string DefaultPrefix { get; internal set; }
