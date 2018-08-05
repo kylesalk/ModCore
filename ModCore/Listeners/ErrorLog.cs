@@ -39,20 +39,14 @@ namespace ModCore.Listeners
             switch (cfg.CommandError.Chat)
             {
                 default:
-                case CommandErrorVerbosity.None:
-                    #if DEBUG
-                    Console.WriteLine($"Oopsie woopsie! {e.Exception}");
-                    #endif
+                case CommandErrorVerbosity.NameDesc:
+                    await DescribeCommandErrorAsync(e.Exception, qualifiedName, ctx);
                     break;
-
                 case CommandErrorVerbosity.Name:
                     await ctx.SafeRespondAsync($"**Command {qualifiedName} Errored!**");
                     #if DEBUG
                     Console.WriteLine($"Oopsie woopsie! {e.Exception}");
                     #endif
-                    break;
-                case CommandErrorVerbosity.NameDesc:
-                    await DescribeCommandErrorAsync(e.Exception, qualifiedName, ctx);
                     break;
                 case CommandErrorVerbosity.Exception:
                     var stream = new MemoryStream();
@@ -70,15 +64,12 @@ namespace ModCore.Listeners
                 switch (cfg.CommandError.ActionLog)
                 {
                     default:
-                    case CommandErrorVerbosity.None:
-                        break;
-
-                    case CommandErrorVerbosity.Name:
-                        await ctx.LogMessageAsync($"**Command {qualifiedName} errored!**\n`{e.Exception.GetType()}`");
-                        break;
                     case CommandErrorVerbosity.NameDesc:
                         await ctx.LogMessageAsync(
                             $"**Command {qualifiedName} errored!**\n`{e.Exception.GetType()}`:\n{e.Exception.Message}");
+                        break;
+                    case CommandErrorVerbosity.Name:
+                        await ctx.LogMessageAsync($"**Command {qualifiedName} errored!**\n`{e.Exception.GetType()}`");
                         break;
                     case CommandErrorVerbosity.Exception:
                         var st = e.Exception.StackTrace;

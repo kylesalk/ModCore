@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace ModCore.Entities
@@ -227,18 +228,19 @@ namespace ModCore.Entities
         /// Gets or sets the command error verbosity for chat
         /// </summary>
         [JsonProperty("chatverbosity")]
-        public CommandErrorVerbosity Chat { get; set; } = CommandErrorVerbosity.None;
+        public CommandErrorVerbosity Chat { get; set; } = CommandErrorVerbosity.NameDesc;
 
 	    /// <summary>
 	    /// Gets or sets the command error verbosity for the action log (if enabled)
 	    /// </summary>
 	    [JsonProperty("actionverbosity")]
-	    public CommandErrorVerbosity ActionLog { get; set; } = CommandErrorVerbosity.None;
+	    public CommandErrorVerbosity ActionLog { get; set; } = CommandErrorVerbosity.NameDesc;
     }
 
-    public enum CommandErrorVerbosity
+    public enum CommandErrorVerbosity : byte
     {
-        None,
+	    [Obsolete("Should be replaced with " + nameof(NameDesc) + " where used")]
+	    None,
         Name,
         NameDesc,
         Exception
