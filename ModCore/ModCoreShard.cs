@@ -13,6 +13,7 @@ using ModCore.Database;
 using ModCore.Entities;
 using ModCore.Logic;
 using ModCore.Logic.Extensions;
+using ModCore.Logic.Localization;
 
 namespace ModCore
 {
@@ -98,6 +99,8 @@ namespace ModCore
                 PrefixResolver = this.GetPrefixPositionAsync,
                 Services = deps,
             });
+            
+            this.Commands.SetHelpFormatter<LocalizationHelpFormatter>();
 
             // set the converters
             this.Commands.RegisterConverter(new AugmentedBoolConverter());

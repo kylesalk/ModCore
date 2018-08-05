@@ -17,6 +17,7 @@ using ModCore.CoreApi;
 using ModCore.Database;
 using ModCore.Entities;
 using ModCore.Listeners;
+using ModCore.Logic.Localization;
 using Newtonsoft.Json;
 using Startup = ModCore.CoreApi.Startup;
 
@@ -45,6 +46,9 @@ namespace ModCore
 
             var input = File.ReadAllText("settings.json", new UTF8Encoding(false));
             Settings = JsonConvert.DeserializeObject<Settings>(input);
+	        
+	        await Localizer.InitializeAll("locale-", ".yml");
+	        
 	        GlobalContextBuilder = Settings.Database.CreateContextBuilder();
             PerspectiveApi = new Perspective(Settings.PerspectiveToken);
 
