@@ -33,10 +33,10 @@ namespace ModCore
         
         public ModCoreShard(Settings settings, int id, SharedData sharedData)
         {
-            Settings = settings;
-            SharedData = sharedData;
-            Database = settings.Database.CreateContextBuilder();
-            ShardId = id;
+            this.Settings = settings;
+            this.SharedData = sharedData;
+            this.Database = settings.Database.CreateContextBuilder();
+            this.ShardId = id;
         }
 
         internal void Initialize(SharedServices sharedServices)
