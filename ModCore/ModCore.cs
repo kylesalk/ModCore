@@ -33,18 +33,8 @@ namespace ModCore
 
         internal async Task InitializeAsync(string[] args)
         {
-            if (!File.Exists("settings.json"))
-            {
-                var json = JsonConvert.SerializeObject(new Settings(), Formatting.Indented);
-                File.WriteAllText("settings.json", json, new UTF8Encoding(false));
-                Console.WriteLine("Config file was not found, a new one was generated. Fill it with proper values and rerun this program");
-                Console.ReadKey();
-                return;
-            }
-
-            var input = File.ReadAllText("settings.json", new UTF8Encoding(false));
-            Settings = JsonConvert.DeserializeObject<Settings>(input);
-	        
+	        this.Settings = await Settings.LoadAsync();
+            
 	        this.GlobalContextBuilder = Settings.Database.CreateContextBuilder();
 
             this.Shards = new List<ModCoreShard>();

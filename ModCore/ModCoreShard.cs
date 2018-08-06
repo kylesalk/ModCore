@@ -19,14 +19,14 @@ namespace ModCore
 {
     public class ModCoreShard
     {
-        public int ShardId { get; private set; }
+        public int ShardId { get; }
         public StartTimes StartTimes { get; private set; }
 
         public DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
 
-        public SharedData SharedData { get; set; }
+        public SharedData SharedData { get; }
 		public Settings Settings { get; }
 
         public DatabaseContextBuilder Database { get; }
@@ -139,13 +139,13 @@ namespace ModCore
 
         public Task<int> GetPrefixPositionAsync(DiscordMessage msg)
         {
-            GuildSettings cfg = null;
+            GuildSettings cfg;
             using (var db = Database.CreateContext())
                 cfg = msg.Channel.Guild.GetGuildSettings(db);
-            if (cfg?.Prefix != null)
-                return Task.FromResult(msg.GetStringPrefixLength(cfg.Prefix));
-
-            return Task.FromResult(msg.GetStringPrefixLength(Settings.DefaultPrefix));
+            return Task.FromResult(
+                cfg?.Prefix != null
+                    ? msg.GetStringPrefixLength(cfg.Prefix) 
+                    : msg.GetStringPrefixLength(Settings.DefaultPrefix));
         }
     }
 }
