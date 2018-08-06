@@ -1,0 +1,3 @@
+[submodule "SharpYaml"]
+	path = SharpYaml
+	url = https://github.com/uwx/SharpYaml

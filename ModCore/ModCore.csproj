@@ -32,7 +32,6 @@
     <PackageReference Include="Microsoft.Experimental.Collections" Version="1.0.3-alpha" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
-    <PackageReference Include="SharpYaml" Version="1.6.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
   </ItemGroup>
@@ -43,5 +42,8 @@
     <None Update="settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpYaml\SharpYaml\SharpYAml.csproj" />
   </ItemGroup>
 </Project>

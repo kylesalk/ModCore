@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Update Scripts", "Update Sc
 		Update Scripts\update.sh = Update Scripts\update.sh
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpYAml", "SharpYaml\SharpYaml\SharpYAml.csproj", "{ED85905D-C77F-4965-88A6-2F20BF656F22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{1D3B8DD2-5E0C-4435-8965-3B84BB06EFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D3B8DD2-5E0C-4435-8965-3B84BB06EFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D3B8DD2-5E0C-4435-8965-3B84BB06EFBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED85905D-C77F-4965-88A6-2F20BF656F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED85905D-C77F-4965-88A6-2F20BF656F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED85905D-C77F-4965-88A6-2F20BF656F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED85905D-C77F-4965-88A6-2F20BF656F22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

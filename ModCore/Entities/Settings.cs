@@ -9,6 +9,7 @@ using ModCore.Database;
 using Newtonsoft.Json;
 using Npgsql;
 using SharpYaml.Serialization;
+using SharpYaml.Serialization.Descriptors;
 
 namespace ModCore.Entities
 {
