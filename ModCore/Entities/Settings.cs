@@ -52,13 +52,6 @@ namespace ModCore.Entities
             });
             var utf8 = new UTF8Encoding(false);
 
-            {
-                var input = await File.ReadAllTextAsync("settings.json", utf8);
-                var settings = JsonConvert.DeserializeObject<Settings>(input);
-                await File.WriteAllTextAsync("settings.yml", serializer.Serialize(settings), utf8);
-                return null;
-            }
-            
             if (!File.Exists("settings.yml"))
             {
                 if (!File.Exists("settings.json"))
