@@ -8,53 +8,55 @@ using System.Threading.Tasks;
 using ModCore.Database;
 using Newtonsoft.Json;
 using Npgsql;
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
-using YamlDotNet.Serialization.TypeInspectors;
-using YamlDotNet.Serialization.TypeResolvers;
+using SharpYaml.Serialization;
 
 namespace ModCore.Entities
 {
     public class Settings
     {
         [JsonProperty("token")]
-        [YamlMember(Alias = "token")]
+        [YamlMember("token")]
         internal string Token { get; private set; }
 
         [JsonProperty("prefix")]
-        [YamlMember(Alias = "prefix")]
+        [YamlMember("prefix")]
         public string DefaultPrefix { get; private set; }
 
         [JsonProperty("shard_count")]
-        [YamlMember(Alias = "shard_count")]
+        [YamlMember("shard_count")]
         public int ShardCount { get; private set; }
 
         [JsonProperty("use_perspective")]
-        [YamlMember(Alias = "use_perspective")]
+        [YamlMember("use_perspective")]
         public bool UsePerspective { get; private set; }
 
         [JsonProperty("perspective_token")]
-        [YamlMember(Alias = "perspective_token")]
+        [YamlMember("perspective_token")]
         internal string PerspectiveToken { get; private set; }
 
         [JsonProperty("database")]
-        [YamlMember(Alias = "database")]
+        [YamlMember("database")]
         internal DatabaseSettings Database { get; private set; }
 
 		[JsonProperty("bot_managers")]
-		[YamlMember(Alias = "bot_managers")]
+		[YamlMember("bot_managers")]
 		public List<ulong> BotManagers { get; private set; } = new List<ulong>();
 
         public static async Task<Settings> LoadAsync()
         {
-            var serializer = new SerializerBuilder()
-                .WithNamingConvention(new UnderscoredNamingConvention())
-                .Build();
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(new UnderscoredNamingConvention())
-                .Build();
+            var serializer = new Serializer(new SerializerSettings
+            {
+                EmitAlias = false,
+                EmitTags = false,
+            });
             var utf8 = new UTF8Encoding(false);
+
+            {
+                var input = await File.ReadAllTextAsync("settings.json", utf8);
+                var settings = JsonConvert.DeserializeObject<Settings>(input);
+                await File.WriteAllTextAsync("settings.yml", serializer.Serialize(settings), utf8);
+                return null;
+            }
             
             if (!File.Exists("settings.yml"))
             {
@@ -77,14 +79,14 @@ namespace ModCore.Entities
                 return settings;
             }
 
-            return deserializer.Deserialize<Settings>(await File.ReadAllTextAsync("settings.yml", utf8));
+            return serializer.Deserialize<Settings>(await File.ReadAllTextAsync("settings.yml", utf8));
         }
     }
     
     public class DatabaseSettings
     {
         [JsonProperty("provider")]
-        [YamlMember(Alias = "provider")]
+        [YamlMember("provider")]
         public DatabaseProvider Provider { get; private set; }
 
         /// <summary>
@@ -101,27 +103,27 @@ namespace ModCore.Entities
         }
 
         [JsonProperty("hostname")]
-        [YamlMember(Alias = "hostname")]
+        [YamlMember("hostname")]
         public string Hostname { get; private set; }
 
         [JsonProperty("port")]
-        [YamlMember(Alias = "port")]
+        [YamlMember("port")]
         public int Port { get; private set; }
 
         [JsonProperty("database")]
-        [YamlMember(Alias = "database")]
+        [YamlMember("database")]
         public string Database { get; private set; }
 
         [JsonProperty("username")]
-        [YamlMember(Alias = "username")]
+        [YamlMember("username")]
         public string Username { get; private set; }
 
         [JsonProperty("password")]
-        [YamlMember(Alias = "password")]
+        [YamlMember("password")]
         public string Password { get; private set; }
         
         [JsonProperty("data_source")]
-        [YamlMember(Alias = "data_source")]
+        [YamlMember("data_source")]
         public string DataSource { get; private set; }
 
         public string BuildConnectionString()

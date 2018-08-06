@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using YamlDotNet.Serialization;
+using SharpYaml.Serialization;
 
 namespace ModCore.Logic.HelpTemplating
 {
@@ -19,7 +19,7 @@ namespace ModCore.Logic.HelpTemplating
             _tokenMappings = new Dictionary<string, string>();
 
             var value = await File.ReadAllTextAsync($@"{templatePath}", Encoding.UTF8);
-            var obj = new DeserializerBuilder().Build().Deserialize<Dictionary<object, object>>(new StringReader(value));
+            var obj = new Serializer().Deserialize<Dictionary<object, object>>(new StringReader(value));
 
             foreach (var entry in Flatten(obj))
                 _tokenMappings.Add(entry);
