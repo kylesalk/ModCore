@@ -20,7 +20,7 @@ namespace ModCore.Entities
     {
         [JsonProperty("token")]
         [YamlMember(Alias = "token")]
-        public string Token { get; private set; }
+        internal string Token { get; private set; }
 
         [JsonProperty("prefix")]
         [YamlMember(Alias = "prefix")]
@@ -36,11 +36,11 @@ namespace ModCore.Entities
 
         [JsonProperty("perspective_token")]
         [YamlMember(Alias = "perspective_token")]
-        public string PerspectiveToken { get; private set; }
+        internal string PerspectiveToken { get; private set; }
 
         [JsonProperty("database")]
         [YamlMember(Alias = "database")]
-        public DatabaseSettings Database { get; private set; }
+        internal DatabaseSettings Database { get; private set; }
 
 		[JsonProperty("bot_managers")]
 		[YamlMember(Alias = "bot_managers")]
