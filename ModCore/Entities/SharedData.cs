@@ -33,7 +33,7 @@ namespace ModCore.Entities
 
         public string ApiToken = null;
 
-        public ModCore ModCore;
+        public MainCore ModCore;
 
         public SharedData()
         {

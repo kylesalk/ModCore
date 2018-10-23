@@ -17,7 +17,7 @@ namespace ModCore.CoreApi.Controllers
 	[Route("info")]
 	public class InfoController : Controller
     {
-		private ModCore core;
+		private MainCore core;
 
 		public InfoController(CoreContainer cont)
 		{

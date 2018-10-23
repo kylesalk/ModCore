@@ -6,6 +6,6 @@ namespace ModCore.CoreApi
 {
     public struct CoreContainer
     {
-		internal ModCore mcore;
+		internal MainCore mcore;
     }
 }

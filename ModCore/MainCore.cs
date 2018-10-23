@@ -22,7 +22,7 @@ using Startup = ModCore.CoreApi.Startup;
 
 namespace ModCore
 {
-    public class ModCore
+    public class MainCore
     {
 		public Settings Settings { get; private set; }
 		public SharedData SharedData { get; private set; }

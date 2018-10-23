@@ -14,7 +14,7 @@ namespace ModCore.CoreApi.Controllers
 	[Route("api")]
 	public class ApiController : Controller
     {
-		private ModCore core;
+		private MainCore core;
 
 		public ApiController(CoreContainer cont)
 		{

@@ -73,7 +73,7 @@ namespace ModCore.Commands
 		public DiscordMember Member { get; set; }
 		public CommandContext Context { get; set; }
 
-		public TestVariables(DiscordMessage msg, DiscordClient client, CommandContext ctx, ModCore core, SharedData share)
+		public TestVariables(DiscordMessage msg, DiscordClient client, CommandContext ctx, MainCore core, SharedData share)
 		{
 			this.Client = client;
 
@@ -89,7 +89,7 @@ namespace ModCore.Commands
 		}
 
 		public DiscordClient Client;
-		public ModCore ModCore;
+		public MainCore ModCore;
 		public SharedData SharedData;
 	}
 }

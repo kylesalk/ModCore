@@ -4,8 +4,8 @@ namespace ModCore
 {
     internal static class Program
     {
-        private static Task Main(string[] args) => (ModCore = new ModCore()).InitializeAsync(args);
+        private static Task Main(string[] args) => (ModCore = new MainCore()).InitializeAsync(args);
 
-        public static ModCore ModCore { get; private set; }
+        public static MainCore ModCore { get; private set; }
     }
 }

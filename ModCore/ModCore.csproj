@@ -40,6 +40,9 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModCore.ControlPanel\ModCore.ControlPanel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
