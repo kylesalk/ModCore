@@ -57,7 +57,7 @@ namespace ModCore.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGeneratedOnAdd", true)
                         .HasAnnotation("Sqlite:Autoincrement", true)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
                     b.HasKey("Command");
 

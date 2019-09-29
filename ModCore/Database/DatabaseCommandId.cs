@@ -12,7 +12,7 @@ namespace ModCore.Database
         [Column("id")]
         [AlternateKey("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)]
+        [Annotation("SqlServer:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)]
         [Annotation("Npgsql:ValueGeneratedOnAdd", true)]
         [Annotation("Sqlite:Autoincrement", true)]
         public short Id { get; set; }

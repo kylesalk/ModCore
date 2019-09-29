@@ -229,9 +229,9 @@ namespace ModCore.Logic.Utils.Captcha
         /// </summary>
         public byte[] DrawCaptcha(string message, string foreColor, string backColor, float fontSize, string fontName)
         {
-            var fColor = ColorTranslator.FromHtml(foreColor);
+            var fColor = System.Drawing.ColorTranslator.FromHtml(foreColor);
             var bColor = string.IsNullOrWhiteSpace(backColor) ?
-                Color.Transparent : ColorTranslator.FromHtml(backColor);
+                Color.Transparent : System.Drawing.ColorTranslator.FromHtml(backColor);
 
             var captchaFont = new Font(fontName, fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
 

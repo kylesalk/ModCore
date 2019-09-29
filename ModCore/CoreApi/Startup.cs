@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
 namespace ModCore.CoreApi
 {
@@ -25,11 +25,11 @@ namespace ModCore.CoreApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc();
+			services.AddMvc(option => option.EnableEndpointRouting = false);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
@@ -49,8 +49,7 @@ namespace ModCore.CoreApi
 
 			app.UseDefaultFiles(df);
 			app.UseStaticFiles(new StaticFileOptions() { FileProvider = fp, RequestPath = "" });
-
-			app.UseMvc();
+            app.UseRouting();
 		}
 	}
 }

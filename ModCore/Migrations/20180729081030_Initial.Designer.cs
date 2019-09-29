@@ -58,7 +58,7 @@ namespace ModCore.Migrations
                         .HasColumnType("smallint")
                         .HasAnnotation("Npgsql:ValueGeneratedOnAdd", true)
                         .HasAnnotation("Sqlite:Autoincrement", true)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
                     b.HasKey("Command")
                         .HasName("command_qualified");
