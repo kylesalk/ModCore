@@ -49,7 +49,7 @@ namespace ModCore.CoreApi
 
 			app.UseDefaultFiles(df);
 			app.UseStaticFiles(new StaticFileOptions() { FileProvider = fp, RequestPath = "" });
-            app.UseRouting();
+			app.UseRouting();
 		}
 	}
 }
